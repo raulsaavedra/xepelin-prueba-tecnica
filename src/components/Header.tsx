@@ -1,6 +1,7 @@
-import { styled } from '@stitches/react';
 import Link from 'next/link';
 import React from 'react';
+import { MdClose, MdOutlineMenu } from 'react-icons/md';
+import { keyframes, styled } from './stitches';
 
 const SHeaderWrapper = styled('div', {
   position: 'absolute',
@@ -17,9 +18,16 @@ const SHeader = styled('div', {
   margin: '0 auto',
   padding: '25px 2rem',
   position: 'relative',
-  '@media (max-width: 1020px)': {
+  gap: '30px',
+  '@bpMd': {
     justifyContent: 'center',
-    gridTemplateColumns: '1fr',
+  },
+});
+const SHeaderLogo = styled('div', {
+  '@bpMd': {
+    img: {
+      maxWidth: '90px',
+    },
   },
 });
 const SHeaderLink = styled('a', {
@@ -32,10 +40,53 @@ const SHeaderLinkList = styled('ul', {
   alignItems: 'center',
   padding: '0',
   gap: '55px',
+  variants: {
+    desktop: {
+      true: {
+        '@bpMd': {
+          display: 'none',
+        },
+      },
+    },
+    mobile: {
+      true: {
+        padding: '0',
+        marginTop: '75px',
+        justifyContent: 'flex-start',
+        flexDirection: 'column',
+        a: {
+          textAlign: 'left',
+          width: '100%',
+        },
+      },
+    },
+  },
 });
 const SHeaderButtonGroup = styled('div', {
   display: 'flex',
   gap: '20px',
+
+  variants: {
+    desktop: {
+      true: {
+        '@bpMd': {
+          display: 'none',
+        },
+      },
+    },
+    mobile: {
+      true: {
+        marginTop: '20px',
+        flexDirection: 'column',
+        a: {
+          display: 'grid',
+          width: '200px',
+          justifyContent: 'center',
+          margin: '0 auto',
+        },
+      },
+    },
+  },
   a: {
     color: '$white',
     border: '1px solid $white',
@@ -50,34 +101,111 @@ const SHeaderButtonGroup = styled('div', {
     color: '$transparent',
   },
 });
+const SHeaderToggleMobile = styled('button', {
+  border: 0,
+  background: '0',
+  color: '$white',
+  fontSize: '30px',
+  display: 'none',
+  '@bpMd': {
+    display: 'grid',
+  },
+});
+const fadeIn = keyframes({
+  from: {
+    opacity: 0,
+  },
+  to: {
+    opacity: 1,
+  },
+});
+const SHeaderMobileWrapper = styled('div', {
+  padding: '0rem 2rem',
+  background: '$black',
+  position: 'fixed',
+  width: '100%',
+  height: '100%',
+  zIndex: '10',
+  animation: `${fadeIn} 0.3s ease-in-out`,
+});
+const SHeaderMobileClose = styled('button', {
+  position: 'absolute',
+  top: '15px',
+  right: '15px',
+  background: '0',
+  border: '0',
+  color: '$white',
+  fontSize: '35px',
+});
+const SHeaderMobile = styled('div', {
+  position: 'relative',
+  display: 'grid',
+  gap: '20px',
+  justifyContent: 'flex-start',
+});
 export default function Header() {
+  const [showModal, setShowModal] = React.useState(false);
   return (
-    <SHeaderWrapper>
-      <SHeader>
-        <div>
-          <img src="/logo.svg" />
-        </div>
-        <SHeaderLinkList>
-          <Link passHref href="#">
-            <SHeaderLink>Soluciones</SHeaderLink>
-          </Link>
-          <Link passHref href="#">
-            <SHeaderLink>Sobre nosotros</SHeaderLink>
-          </Link>
-          <Link passHref href="#">
-            <SHeaderLink>Recursos</SHeaderLink>
-          </Link>
-          <Link passHref href="#">
-            <SHeaderLink>Job Board</SHeaderLink>
-          </Link>
-        </SHeaderLinkList>
-        <div>
-          <SHeaderButtonGroup>
-            <a href="#">Ingresar</a>
-            <a href="#">Regístrate</a>
-          </SHeaderButtonGroup>
-        </div>
-      </SHeader>
-    </SHeaderWrapper>
+    <>
+      <SHeaderWrapper>
+        <SHeader>
+          <SHeaderLogo>
+            <img src="/logo.svg" />
+          </SHeaderLogo>
+          <div>
+            <SHeaderLinkList desktop>
+              <Link passHref href="#">
+                <SHeaderLink>Soluciones</SHeaderLink>
+              </Link>
+              <Link passHref href="#">
+                <SHeaderLink>Sobre nosotros</SHeaderLink>
+              </Link>
+              <Link passHref href="#">
+                <SHeaderLink>Recursos</SHeaderLink>
+              </Link>
+              <Link passHref href="#">
+                <SHeaderLink>Job Board</SHeaderLink>
+              </Link>
+            </SHeaderLinkList>
+          </div>
+          <div>
+            <SHeaderButtonGroup desktop>
+              <a href="#">Ingresar</a>
+              <a href="#">Regístrate</a>
+            </SHeaderButtonGroup>
+            <SHeaderToggleMobile onClick={() => setShowModal(true)}>
+              <MdOutlineMenu />
+            </SHeaderToggleMobile>
+          </div>
+        </SHeader>
+      </SHeaderWrapper>
+      {showModal && (
+        <SHeaderMobileWrapper>
+          <SHeaderMobile>
+            <SHeaderLinkList mobile>
+              <Link passHref href="#">
+                <SHeaderLink>Soluciones</SHeaderLink>
+              </Link>
+              <Link passHref href="#">
+                <SHeaderLink>Sobre nosotros</SHeaderLink>
+              </Link>
+              <Link passHref href="#">
+                <SHeaderLink>Recursos</SHeaderLink>
+              </Link>
+              <Link passHref href="#">
+                <SHeaderLink>Job Board</SHeaderLink>
+              </Link>
+            </SHeaderLinkList>
+            <SHeaderButtonGroup mobile>
+              <a href="#">Ingresar</a>
+              <a href="#">Regístrate</a>
+            </SHeaderButtonGroup>
+          </SHeaderMobile>
+          <SHeaderMobileClose onClick={() => setShowModal(false)}>
+            <MdClose />
+          </SHeaderMobileClose>
+        </SHeaderMobileWrapper>
+      )}
+    </>
   );
 }

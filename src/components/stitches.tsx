@@ -19,7 +19,9 @@ export const { styled, css, getCssText, keyframes, globalCss } = createStitches(
         lg: '18px',
         xl: '24px',
         '2xl': '40px',
+        '2xlm': '24px',
         '3xl': '58px',
+        '3xlm': '36px',
       },
       sizes: {
         extraSmall: '425px',

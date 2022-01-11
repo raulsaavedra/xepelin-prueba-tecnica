@@ -4,11 +4,18 @@ export const SHeadingPrimary = styled('h1', {
   fontSize: '$3xl',
   fontWeight: '600',
   lineHeight: '1.2',
+  '@bpMd': {
+    fontSize: '$3xlm',
+    lineHeight: '1.3',
+  },
 });
 export const SHeadingSecondary = styled('h2', {
   fontSize: '$2xl',
   fontWeight: '600',
   lineHeight: '1.2',
+  '@bpMd': {
+    fontSize: '$2xlm',
+  },
 });
 
 export const SHeadingTertiary = styled('h3', {

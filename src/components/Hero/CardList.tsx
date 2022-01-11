@@ -2,8 +2,15 @@ import React from 'react';
 import { MdKeyboardArrowRight } from 'react-icons/md';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { Swiper, SwiperSlide } from 'swiper/react'; // eslint-disable-line import/no-unresolved
+import 'swiper/css'; // eslint-disable-line import/no-unresolved
+import 'swiper/css/pagination'; // eslint-disable-line import/no-unresolved
+
+import SwiperCore, { Pagination } from 'swiper';
+
 import { SButton } from '../Base/SButton';
 import { SAbsoluteLink, SBox, SContainer, SGrid } from '../Base/SLayout';
+
 import {
   SHeadingFourth,
   SHeadingSecondary,
@@ -12,6 +19,8 @@ import {
 } from '../Base/STypography';
 import { styled } from '../stitches';
 import SectionNav from '../SectionNav';
+
+SwiperCore.use([Pagination]);
 
 interface Card {
   title: string;
@@ -30,8 +39,9 @@ const SCardList = styled('div', {
   gap: '25px',
   paddingBottom: '125px',
   marginBottom: '15px',
-  '@bpLg': {
+  '@bpMd': {
     gridTemplateColumns: '1fr',
+    display: 'none',
   },
 });
 const SCard = styled('div', {
@@ -62,6 +72,9 @@ export const SGreenRhombusWrapper = styled('div', {
   position: 'absolute',
   bottom: '50px',
   right: '300px',
+  '@bpMd': {
+    display: 'none',
+  },
   '&::after': {
     content: '""',
     position: 'absolute',
@@ -88,6 +101,9 @@ export const SOrangeRhombusWrapper = styled('div', {
   position: 'absolute',
   bottom: '10px',
   left: '140px',
+  '@bpMd': {
+    display: 'none',
+  },
   '&::after': {
     content: '""',
     position: 'absolute',
@@ -110,6 +126,13 @@ export const SOrangeRhombus = styled('div', {
   height: '25px',
 });
 
+const SCardSlider = styled('div', {
+  display: 'none',
+  paddingBottom: '75px',
+  '@bpMd': {
+    display: 'block',
+  },
+});
 export default function CardList({ title, description, cards }: CardListProps) {
   const { ref, inView, entry } = useInView({
     threshold: 0.4,
@@ -122,6 +145,7 @@ export default function CardList({ title, description, cards }: CardListProps) {
         <SCardList>
           {cards.map((card, index) => (
             <motion.div
+              key={`card${index}`}
               initial={{ opacity: 0, y: 75 }}
               animate={{
                 opacity: inView ? 1 : 0,
@@ -153,7 +177,7 @@ export default function CardList({ title, description, cards }: CardListProps) {
         {inView && (
           <>
             <motion.div
-              initial={{ x: 500 }}
+              initial={{ x: 680 }}
               animate={{ x: -1500, transition: { duration: 2, delay: 0.6 } }}
             >
               <SGreenRhombusWrapper>
@@ -162,7 +186,7 @@ export default function CardList({ title, description, cards }: CardListProps) {
             </motion.div>
             <motion.div
               initial={{ x: -500 }}
-              animate={{ x: 1500, transition: { duration: 2, delay: 0.6 } }}
+              animate={{ x: 1600, transition: { duration: 2, delay: 0.6 } }}
             >
               <SOrangeRhombusWrapper>
                 <SOrangeRhombus />
@@ -170,6 +194,38 @@ export default function CardList({ title, description, cards }: CardListProps) {
             </motion.div>
           </>
         )}
+        <SCardSlider>
+          <Swiper
+            pagination
+            spaceBetween={50}
+            slidesPerView={1}
+            onSlideChange={() => console.log('slide change')}
+            onSwiper={(swiper) => console.log(swiper)}
+          >
+            {cards.map((card, index) => (
+              <SwiperSlide>
+                <SCard key={card.title}>
+                  <img src={card.image} alt={card.title} />
+                  <SHeadingFourth css={{ textAlign: 'center' }}>
+                    {card.title}
+                  </SHeadingFourth>
+                  <SText css={{ fontSize: '$sm', textAlign: 'center' }}>
+                    {card.description}
+                  </SText>
+                  <SGrid css={{ justifyContent: 'center' }}>
+                    <SButton>
+                      <span>Explorar</span>
+                      <div className="icon">
+                        <MdKeyboardArrowRight />
+                      </div>
+                    </SButton>
+                  </SGrid>
+                  <SAbsoluteLink href={card.link} />
+                </SCard>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </SCardSlider>
       </SContainer>
     </SBox>
   );

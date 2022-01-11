@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 
 import { globalCss } from './stitches';
 import Header from './Header';
+import Footer from './Footer';
 
 const SGlobal = globalCss({
   html: {
@@ -44,6 +45,18 @@ const SGlobal = globalCss({
     padding: 0,
     margin: 0,
   },
+  '.swiper.swiper-horizontal': {
+    overflow: 'visible',
+    '.swiper-pagination': {
+      bottom: '-20px',
+      '.swiper-pagination-bullet': {
+        margin: '0 7px',
+        width: '10px',
+        height: '10px',
+        background: '$purple',
+      },
+    },
+  },
 });
 export default function Page({ children }: { children: ReactNode }) {
   SGlobal();
@@ -51,6 +64,7 @@ export default function Page({ children }: { children: ReactNode }) {
     <div>
       <Header />
       {children}
+      <Footer />
     </div>
   );
 }

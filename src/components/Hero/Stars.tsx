@@ -28,6 +28,9 @@ export const SPinkRhombusWrapper = styled('div', {
   position: 'absolute',
   bottom: '100px',
   right: '250px',
+  '@bpMd': {
+    right: '150px',
+  },
   '&::after': {
     content: '""',
     position: 'absolute',

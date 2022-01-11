@@ -7,7 +7,7 @@ import { SButtonBg } from './Base/SButton';
 import { SBox, SContainer, SFlex, SGrid } from './Base/SLayout';
 import SectionNav from './SectionNav';
 import { keyframes, styled } from './stitches';
-import { SHeadingFourth, SHeadingTertiary } from './Base/STypography';
+import { SHeadingFourth, SHeadingTertiary, SText } from './Base/STypography';
 
 const STabsWrapper = styled('div', {
   background: '#fafafa',
@@ -28,8 +28,10 @@ const STabsList = styled(Tabs.List, {
   display: 'grid',
   gap: '20px',
 });
+
 const STabsCard = styled(Tabs.Trigger, {
-  display: 'flex',
+  display: 'grid',
+  gridTemplateColumns: 'auto 1fr',
   alignItems: 'center',
   gap: '20px',
   padding: '20px 20px',
@@ -38,6 +40,9 @@ const STabsCard = styled(Tabs.Trigger, {
   borderRadius: '20px',
   transition: 'all 0.3s ease-in-out',
   cursor: 'pointer',
+  '@bpMd': {
+    background: 'white',
+  },
   variants: {
     active: {
       true: {
@@ -55,6 +60,20 @@ const STabsCard = styled(Tabs.Trigger, {
     background: 'white',
   },
 });
+const STabsCardFooter = styled('div', {
+  display: 'none',
+  '@bpMd': {
+    gridColumn: '1 / -1',
+    display: 'grid',
+    gridAutoFlow: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    '> div': {
+      display: 'grid',
+      gap: '10px',
+    },
+  },
+});
 const fadeIn = keyframes({
   from: {
     opacity: 0,
@@ -69,62 +88,34 @@ const STabsContent = styled('div', {
   animationFillMode: 'backwards',
   animation: `${fadeIn} 0.4s ease-in-out`,
 });
-export default function TabsList() {
+interface Tab {
+  title: string;
+  subtitle: string;
+  image: string;
+  content: {
+    title: string;
+    description: string;
+    link: string;
+    stars: number;
+  };
+}
+interface TabsListProps {
+  title: string;
+  description: string;
+  tabs: Tab[];
+}
+
+export default function TabsList({ title, description, tabs }: TabsListProps) {
   const { ref, inView, entry } = useInView({
     threshold: 0.4,
     triggerOnce: true,
   });
-  const tabsData = {
-    title: '¿Qué dicen nuestros clientes?',
-    description:
-      'La Fintech chilena especializada en servicios financieros para pequeñas y medianas empresas en Latinoamérica.',
-    tabs: [
-      {
-        title: 'Andrés Rosales',
-        subtitle: 'Gerente Spa',
-        image: '/tabs-1.jpg',
-        content: {
-          title: 'La mejor experiencia 1',
-          stars: 5,
-          link: '#',
-          description: `<p>&ldquo;En un principio hab&iacute;amos pensado en acudir a alg&uacute;n banco, pero el problema es que necesit&aacute;bamos una serie de documentos y tr&aacute;mites, pero no nos daba el tiempo, por eso tambi&eacute;n estamos muy agradecidos con Xepelin, porque confiaron en nosotros. Gracias a esta alternativa de financiamiento comenzamos a tener mas flujo, lo que nos permiti&oacute; pagar sueldos, cotizaciones e impuestos al d&iacute;a, adem&aacute;s de comprar materiales.&rdquo;</p>
-          <p><br></p>
-          <p>Con tan solo 7 meses de funcionamiento a toda m&aacute;quina, la empresa de soluciones de acero SACER ha sabido c&oacute;mo lidiar con las dificultades que conlleva el emprender con un negocio de manera aut&oacute;noma</p>`,
-        },
-      },
-      {
-        title: 'Carlos Zapata',
-        subtitle: 'Gerente general de Zapata Ltda',
-        image: '/tabs-2.jpg',
-        content: {
-          title: 'La mejor experiencia 2',
-          stars: 5,
-          link: '#',
-          description: `<p>&ldquo;En un principio hab&iacute;amos pensado en acudir a alg&uacute;n banco, pero el problema es que necesit&aacute;bamos una serie de documentos y tr&aacute;mites, pero no nos daba el tiempo, por eso tambi&eacute;n estamos muy agradecidos con Xepelin, porque confiaron en nosotros. Gracias a esta alternativa de financiamiento comenzamos a tener mas flujo, lo que nos permiti&oacute; pagar sueldos, cotizaciones e impuestos al d&iacute;a, adem&aacute;s de comprar materiales.&rdquo;</p>
-          <p><br></p>
-          <p>Con tan solo 7 meses de funcionamiento a toda m&aacute;quina, la empresa de soluciones de acero SACER ha sabido c&oacute;mo lidiar con las dificultades que conlleva el emprender con un negocio de manera aut&oacute;noma</p>`,
-        },
-      },
-      {
-        title: 'Carlos Zapata',
-        subtitle: 'Gerente general de Zapata Ltda',
-        image: '/tabs-3.jpg',
-        content: {
-          title: 'La buena experiencia 3',
-          stars: 4,
-          link: '#',
-          description: `<p>&ldquo;En un principio hab&iacute;amos pensado en acudir a alg&uacute;n banco, pero el problema es que necesit&aacute;bamos una serie de documentos y tr&aacute;mites, pero no nos daba el tiempo, por eso tambi&eacute;n estamos muy agradecidos con Xepelin, porque confiaron en nosotros. Gracias a esta alternativa de financiamiento comenzamos a tener mas flujo, lo que nos permiti&oacute; pagar sueldos, cotizaciones e impuestos al d&iacute;a, adem&aacute;s de comprar materiales.&rdquo;</p>
-          <p><br></p>
-          <p>Con tan solo 7 meses de funcionamiento a toda m&aacute;quina, la empresa de soluciones de acero SACER ha sabido c&oacute;mo lidiar con las dificultades que conlleva el emprender con un negocio de manera aut&oacute;noma</p>`,
-        },
-      },
-    ],
-  };
+
   const [currentTab, setCurrentTab] = useState('tab0');
   return (
     <STabsWrapper>
       <SContainer>
-        <SectionNav title={tabsData.title} description={tabsData.description} />
+        <SectionNav title={title} description={description} />
         <STabsRoot
           ref={ref}
           value={currentTab}
@@ -139,8 +130,9 @@ export default function TabsList() {
             }}
           >
             <STabsList aria-label="tabs example">
-              {tabsData.tabs.map((tab, index) => (
+              {tabs.map((tab, index) => (
                 <STabsCard
+                  key={`tab${index}`}
                   value={`tab${index}`}
                   active={currentTab === `tab${index}`}
                 >
@@ -164,6 +156,40 @@ export default function TabsList() {
                       {tab.subtitle}
                     </SHeadingFourth>
                   </SGrid>
+                  <STabsCardFooter>
+                    <div>
+                      <SText
+                        css={{
+                          fontSize: '$sm2',
+                          fontWeight: '600',
+                          color: '$black',
+                        }}
+                      >
+                        {tab.content.title}
+                      </SText>
+                      <SFlex css={{ gap: '10px' }}>
+                        {[...Array(tab.content.stars)].map((_, i) => (
+                          <div key={i}>
+                            <img src="/tabs-star.png" alt="star" />
+                          </div>
+                        ))}
+                      </SFlex>
+                    </div>
+                    <div>
+                      <SGrid
+                        css={{
+                          alignItems: 'center',
+                          padding: '10px 10px',
+                          background: '$orange',
+                          fontSize: '25px',
+                          borderRadius: '10px',
+                          color: '$white',
+                        }}
+                      >
+                        <MdKeyboardArrowRight />
+                      </SGrid>
+                    </div>
+                  </STabsCardFooter>
                 </STabsCard>
               ))}
             </STabsList>
@@ -176,8 +202,8 @@ export default function TabsList() {
               transition: { duration: 0.7 },
             }}
           >
-            {tabsData.tabs.map((tab, index) => (
-              <Tabs.Content value={`tab${index}`}>
+            {tabs.map((tab, index) => (
+              <Tabs.Content key={`tabcontent${index}`} value={`tab${index}`}>
                 <STabsContent>
                   <SHeadingTertiary>{tab.content.title}</SHeadingTertiary>
                   <SFlex css={{ gap: '10px' }}>

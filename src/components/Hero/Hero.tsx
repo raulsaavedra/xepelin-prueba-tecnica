@@ -16,11 +16,14 @@ import {
 const SHeroWrapper = styled('div', {
   display: 'grid',
   background: '$black',
-  padding: '100px 0px',
-  paddingTop: '120px',
+  padding: '160px 0px',
+  paddingTop: '140px',
   position: 'relative',
   overflow: 'hidden',
   marginBottom: '100px',
+  '@bpMd': {
+    paddingTop: '60px',
+  },
 });
 const SHero = styled('div', {
   display: 'grid',
@@ -53,7 +56,7 @@ const SHero = styled('div', {
     height: '397px',
     transform: 'translateY(-50%)',
     background: '#9469FE',
-    opacity: 0.25,
+    opacity: 0.45,
     filter: 'blur(334px)',
     '@bpMd': {
       display: 'none',
@@ -101,10 +104,11 @@ const SHeroCoin = styled('div', {
 });
 const SHeroImage = styled('div', {
   position: 'relative',
+  transform: 'translateX(10%)',
   '> img': {
     width: '100%',
     height: 'auto',
-    marginBottom: '-100px',
+    marginBottom: '-165px',
   },
 });
 const SHeroStar = styled('div', {
@@ -145,7 +149,15 @@ export default function Hero({ title, description, image, link }: IHeroProps) {
         >
           <SHeroTitle as="h1">{title}</SHeroTitle>
           <SHeroDescription as="p">{description}</SHeroDescription>
-          <SButtonBg as="a" href={link} css={{ marginTop: '20px' }}>
+          <SButtonBg
+            as="a"
+            href={link}
+            css={{
+              marginTop: '20px',
+              marginBottom: '-80px',
+              '@bpMd': { marginBottom: '0' },
+            }}
+          >
             <span>Empieza a financiarte </span>
             <div className="icon">
               <MdKeyboardArrowRight />
