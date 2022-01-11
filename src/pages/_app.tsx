@@ -5,7 +5,7 @@ import Page from '../components/Page';
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Page>
-      <NextNProgress color="red" />
+      <NextNProgress color="#141531" />
       <Component {...pageProps} />
     </Page>
   );
