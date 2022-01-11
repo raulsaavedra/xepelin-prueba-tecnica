@@ -5,7 +5,7 @@ Hola Xepelin! Espero que se encuentren muy bien, les dejo aquí mi prueba técni
 
 [Link del Notion de la prueba](https://xepelin.notion.site/Web-UI-Developer-Prueba-T-cnica-e208142e155a4cf3be04c2cb00ad9ec9)
 
-[Link del Sitio](https://xepelin-prueba-tecnica-is6wofxjv-raul670saavedra.vercel.app/)
+[Link del Sitio](https://xepelin-prueba-tecnica.vercel.app/)
 
 ## Stack Utilizado
 - React
